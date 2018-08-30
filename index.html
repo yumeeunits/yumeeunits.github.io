@@ -1,1 +1,144 @@
-<h1>Hello world!</h1>
+<html>
+  <head>
+    <title>idc if this looks like a 90s page</title>
+    <script>
+
+      function calcYE() {
+        var f_data = document.getElementById("f-data").value - 0;
+        var f_unit = document.getElementById("f-unit").value;
+        var t_unit = document.getElementById("t-unit").value;
+        var output = 0;
+
+        switch(f_unit) {
+          case "mm":
+            output = f_data / 150.0;
+            break;
+          case "cm":
+            output = f_data / 15.0;
+            break;
+          case "dm":
+            output = f_data / 1.50;
+            break;
+          case "m":
+            output = f_data / 0.15;
+            break;
+          case "km":
+            output = f_data / 0.00015;
+            break;
+        }
+
+        output = output.toFixed(2);
+        var outstr = " ";
+
+        switch(t_unit) {
+          case "YE":
+            break;
+          case "mYE":
+            output *= 1000;
+            outstr = " m";
+            break;
+          case "kYE":
+            output /= 1000.0;
+            outstr = " k";
+            break;
+        }
+
+        outstr = output + outstr;
+        document.getElementById("output").innerHTML = outstr;
+
+      }
+
+
+      function calcYE2() {
+        var f_data = document.getElementById("f-data2").value - 0;
+        var f_unit = document.getElementById("f-unit2").value;
+        var t_unit = document.getElementById("t-unit2").value;
+        var output = 0;
+
+        switch(f_unit) {
+          case "YE":
+            output = f_data * 0.15;
+            break;
+          case "mYE":
+            output = f_data / 1000.0 * 0.15;
+            break;
+          case "kYE":
+            output = f_data * 1000.0 * 0.15;
+            break;
+        }
+
+        output = output.toFixed(2);
+        var outstr = " ";
+
+        switch(t_unit) {
+          case "m":
+            break;
+          case "mm":
+            outstr += "m";
+            output *= 1000.0;
+            break;
+          case "cm":
+            outstr += "c";
+            output *= 100.0;
+            break;
+          case "dm":
+            outstr += "d";
+            output *= 10.0;
+            break;
+          case "km":
+            outstr += "k";
+            output /= 1000.0;
+            break;
+        }
+
+        outstr = output + outstr;
+        document.getElementById("output2").innerHTML = outstr;
+
+      }
+
+    </script>
+  </head>
+
+  <body style="text-align:center">
+    <h1>The wonderful 90s-styled YumeeUnit conversion helper</h1>
+    <h4 style="color: #777777;">coded with love and passion by izumariu &lt;3</p>
+    <br/>
+    <input type="number" id="f-data">
+    <select id="f-unit">
+      <option>mm</option>
+      <option>cm</option>
+      <option>dm</option>
+      <option>m</option>
+      <option>km</option>
+    </select>
+    to
+    <select id="t-unit">
+      <option>YE</option>
+      <option>mYE</option>
+      <option>kYE</option>
+    </select>
+    <button onclick="calcYE()">=</button>
+    <br/>
+    <h3>= <span id="output">---.-- </span>YE</h3>
+
+    <br/><br/>
+
+    <input type="number" id="f-data2">
+    <select id="f-unit2">
+      <option>YE</option>
+      <option>mYE</option>
+      <option>kYE</option>
+    </select>
+    to
+    <select id="t-unit2">
+      <option>m</option>
+      <option>mm</option>
+      <option>cm</option>
+      <option>dm</option>
+      <option>km</option>
+    </select>
+    <button onclick="calcYE2()">=</button>
+    <br/>
+    <h3>= <span id="output2">---.-- </span>m</h3>
+  </body>
+</html>
