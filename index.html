@@ -1,7 +1,55 @@
 <html>
   <head>
-    <title>idc if this looks like a 90s page</title>
+    <title>idc if this looks ugly</title>
+    <style>
+
+      @import url('https://fonts.googleapis.com/css?family=Lato');
+
+      body {
+        text-align: center;
+        background-image: url('bg.png');
+        background-attachment: scroll;
+        font-family: Lato;
+        color: #eeffff;
+      }
+
+      a {
+        color: #eeffff;
+      }
+
+    </style>
     <script>
+
+      function init() {
+
+        document.getElementById("f-unit2").innerHTML = document.getElementById("t-unit").innerHTML;
+        document.getElementById("t-unit2").innerHTML = document.getElementById("f-unit").innerHTML;
+
+        document.getElementById("f-data").addEventListener("keyup", function(e){
+
+          while(document.getElementById("f-data").value.match(/[^0-9.]/) !== null) {
+            document.getElementById("f-data").value = document.getElementById("f-data").value.replace(/[^0-9.]/,"");
+          }
+
+          if(event.keyCode === 13) {
+            calcYE();
+          }
+
+        });
+
+        document.getElementById("f-data2").addEventListener("keyup", function(e){
+
+          while(document.getElementById("f-data2").value.match(/[^0-9.]/) !== null) {
+            document.getElementById("f-data2").value = document.getElementById("f-data2").value.replace(/[^0-9.]/,"");
+          }
+
+          if(event.keyCode === 13) {
+            calcYE2();
+          }
+
+        });
+
+      }
 
       function calcYE() {
         var f_data = document.getElementById("f-data").value - 0;
@@ -22,8 +70,19 @@
           case "m":
             output = f_data / 0.15;
             break;
-          case "km":
-            output = f_data / 0.00015;
+          // other non-metric stuff that is
+          // converted to centimeters first
+          case "yd":
+            output = f_data * 91.44 / 15.0;
+            break;
+          case "ft":
+            output = f_data * 30.48 / 15.0;
+            break;
+          case "in":
+            output = f_data * 2.54 / 15.0;
+            break;
+          case "mi":
+            output = f_data * 160934.4 / 15.0;
             break;
         }
 
@@ -55,39 +114,46 @@
         var t_unit = document.getElementById("t-unit2").value;
         var output = 0;
 
-        switch(f_unit) {
-          case "YE":
-            output = f_data * 0.15;
-            break;
-          case "mYE":
-            output = f_data / 1000.0 * 0.15;
-            break;
-          case "kYE":
-            output = f_data * 1000.0 * 0.15;
-            break;
-        }
+        output = f_data * 15;
 
         output = output.toFixed(2);
         var outstr = " ";
 
         switch(t_unit) {
-          case "m":
-            break;
           case "mm":
-            outstr += "m";
-            output *= 1000.0;
-            break;
-          case "cm":
-            outstr += "c";
-            output *= 100.0;
-            break;
-          case "dm":
-            outstr += "d";
+            outstr += "mm";
             output *= 10.0;
             break;
+          case "cm":
+            outstr += "cm";
+            break;
+          case "dm":
+            outstr += "dm";
+            output /= 10.0;
+            break;
+          case "m":
+            outstr += "m";
+            output /= 100.0;
+            break;
           case "km":
-            outstr += "k";
+            outstr += "km";
             output /= 1000.0;
+            break;
+          case "yd":
+            outstr += "yd";
+            outstr *= 0.011;
+            break;
+          case "ft":
+            outstr += "ft";
+            outstr *= 0.033;
+            break;
+          case "in":
+            outstr += "in";
+            outstr *= 0.39;
+            break;
+          case "mi":
+            outstr += "mi";
+            outstr *= 0.0000062;
             break;
         }
 
@@ -99,21 +165,24 @@
     </script>
   </head>
 
-  <body style="text-align:center">
-    <h1>The wonderful 90s-styled YumeeUnit conversion helper</h1>
-    <h4 style="color: #777777;">coded with love and passion by izumariu &lt;3</p>
-    <br/>
-    <input type="number" id="f-data">
+  <body onload="init()">
+    <h1 style="color: #eeeeee;">The a bit ugly N:A-styled YumeeUnit conversion helper</h1>
+    <!--<h4 style="color: #eeeeee;">coded with love and passion by izumariu &lt;3</h4>-->
+    <div style="height:100px"></div>
+    <input type="text" id="f-data">
     <select id="f-unit">
       <option>mm</option>
-      <option>cm</option>
+      <option selected>cm</option>
       <option>dm</option>
       <option>m</option>
-      <option>km</option>
+      <option>yd</option>
+      <option>ft</option>
+      <option>in</option>
+      <option>mi</option>
     </select>
-    to
+    <span class="midlabel">to</span>
     <select id="t-unit">
-      <option>YE</option>
+      <option selected>YE</option>
       <option>mYE</option>
       <option>kYE</option>
     </select>
@@ -123,22 +192,16 @@
 
     <br/><br/>
 
-    <input type="number" id="f-data2">
-    <select id="f-unit2">
-      <option>YE</option>
-      <option>mYE</option>
-      <option>kYE</option>
-    </select>
-    to
-    <select id="t-unit2">
-      <option>m</option>
-      <option>mm</option>
-      <option>cm</option>
-      <option>dm</option>
-      <option>km</option>
-    </select>
+    <input type="text" id="f-data2">
+    <select id="f-unit2"></select>
+    <span class="midlabel">to</midlabel>
+    <select id="t-unit2"></select>
     <button onclick="calcYE2()">=</button>
     <br/>
-    <h3>= <span id="output2">---.-- </span>m</h3>
+    <h3>= <span id="output2">---.-- cm</span></h3>
+    <br/>
+    <h4>see also:</h4>
+    <a href="https://twitter.com/muffinphant" target="_blank">the yumeetwittah (where she can be herselfie)!</a><br/>
+    <a href="https://twitch.tv/yumeeture" target="_blank">the (always hungry) yumeeschtr&ouml;m!</a>
   </body>
 </html>
